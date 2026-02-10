@@ -30,15 +30,8 @@ header h1 {
 
 main {
   display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-}
-
-@media (min-width: 768px) {
-  main {
-    grid-template-columns: 2fr 1fr;
-  }
+  flex-direction: column;
+  gap: 20px;
 }
 
 section {
@@ -47,7 +40,29 @@ section {
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 500px;
+}
+
+#activities-container {
+  max-width: 100%;
+}
+
+#activities-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+/* Responsive grid for larger screens */
+@media (min-width: 768px) {
+  #activities-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  #activities-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 section h3 {
@@ -58,11 +73,14 @@ section h3 {
 }
 
 .activity-card {
-  margin-bottom: 15px;
+  margin-bottom: 0;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .activity-card h4 {
@@ -72,6 +90,23 @@ section h3 {
 
 .activity-card p {
   margin-bottom: 8px;
+}
+
+.activity-actions {
+  margin-top: auto;
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.register-btn {
+  background-color: #2e7d32;
+  width: 100%;
+}
+
+.register-btn:hover {
+  background-color: #388e3c;
 }
 
 /* New styles for participants section */
@@ -165,9 +200,11 @@ button:hover {
 }
 
 .message {
-  margin-top: 20px;
-  padding: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
   border-radius: 4px;
+  text-align: center;
+  font-weight: 500;
 }
 
 .success {
@@ -190,6 +227,70 @@ button:hover {
 
 .hidden {
   display: none;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #1a237e;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #1a237e;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background-color: #f5f5f5;
+  color: #333;
+  border-radius: 4px;
 }
 
 footer {

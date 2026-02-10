@@ -1,8 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
   const activitiesList = document.getElementById("activities-list");
-  const activitySelect = document.getElementById("activity");
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
+  const modal = document.getElementById("registration-modal");
+  const closeModalBtn = document.getElementById("close-modal");
+  const selectedActivityInput = document.getElementById("selected-activity");
+
+  // Function to open modal
+  function openModal(activityName) {
+    selectedActivityInput.value = activityName;
+    modal.classList.add("show");
+    document.getElementById("email").focus();
+  }
+
+  // Function to close modal
+  function closeModal() {
+    modal.classList.remove("show");
+    signupForm.reset();
+  }
+
+  // Close modal on button click
+  closeModalBtn.addEventListener("click", closeModal);
+
+  // Close modal when clicking outside
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Close modal on Escape key
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("show")) {
+      closeModal();
+    }
+  });
 
   // Function to fetch activities from API
   async function fetchActivities() {
@@ -45,20 +77,25 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="participants-container">
             ${participantsHTML}
           </div>
+          <div class="activity-actions">
+            <button class="register-btn" data-activity="${name}">Register Student</button>
+          </div>
         `;
 
         activitiesList.appendChild(activityCard);
-
-        // Add option to select dropdown
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        activitySelect.appendChild(option);
       });
 
       // Add event listeners to delete buttons
       document.querySelectorAll(".delete-btn").forEach((button) => {
         button.addEventListener("click", handleUnregister);
+      });
+
+      // Add event listeners to register buttons
+      document.querySelectorAll(".register-btn").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          const activityName = event.target.getAttribute("data-activity");
+          openModal(activityName);
+        });
       });
     } catch (error) {
       activitiesList.innerHTML =
@@ -115,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
 
     const email = document.getElementById("email").value;
-    const activity = document.getElementById("activity").value;
+    const activity = selectedActivityInput.value;
 
     try {
       const response = await fetch(
@@ -132,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
-        signupForm.reset();
+        closeModal();
 
         // Refresh activities list to show updated participants
         fetchActivities();
